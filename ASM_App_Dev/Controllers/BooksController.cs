@@ -25,7 +25,7 @@ namespace ASM_App_Dev.Controllers
             return View(books);
         }
 
-        //3 - Create Book Data
+        // 3 - Create Book Data
         [HttpGet]
         public IActionResult Create()
         {
@@ -40,8 +40,6 @@ namespace ASM_App_Dev.Controllers
                 NameBook = book.NameBook,
                 QuantityBook = book.QuantityBook,
                 Price = book.Price,
-                InformationBook = book.InformationBook,
-                CreatedAt  = book.CreatedAt
             };
             _context.Books.Add(newBook);
             _context.SaveChanges();
@@ -49,7 +47,7 @@ namespace ASM_App_Dev.Controllers
         }
 
 
-        //4 - Delete Book Data
+        // 4 - Delete Book Data
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -60,6 +58,37 @@ namespace ASM_App_Dev.Controllers
             }
             _context.Books.Remove(bookInDb);
             _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // 5 - Edit Book Data
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var bookInDb = _context.Books.SingleOrDefault(t => t.Id == id);
+            if (bookInDb is null)
+            {
+                return NotFound();
+            }
+
+            return View(bookInDb);
+        }
+        [HttpPost]
+        public IActionResult Edit(Book book)
+        {
+            var bookInDb = _context.Books.SingleOrDefault(t => t.Id == book.Id);
+            if (bookInDb is null)
+            {
+                return BadRequest();
+            }
+
+            bookInDb.NameBook = book.NameBook;
+            bookInDb.QuantityBook = book.QuantityBook;
+            bookInDb.Price = book.Price;
+            bookInDb.InformationBook = book.InformationBook;
+
+            _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

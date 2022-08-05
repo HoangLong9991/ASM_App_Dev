@@ -3,6 +3,11 @@
 *@
 @{
 }
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
 
 @model Book
 
@@ -12,34 +17,27 @@
     .body-container {
         display: flex;
     }
-
     .side-bar {
         width: 20%;
         margin: 0 20px 0 10px;
     }
-
     .fa-chart-line {
         margin-right: 10px;
     }
-
     .fa-book {
         margin-right: 10px;
     }
-
     .fa-list {
         margin-right: 10px;
     }
-
     .fa-clipboard-user {
         margin-right: 10px;
     }
-
     .display-container {
         width: 80%;
     }
-
-    .btn-wrapper {
-        margin: 10px 0 10px 0;
+    .btn-wrapper{
+        margin:10px 0 10px 0;
     }
 </style>
 
@@ -54,25 +52,25 @@
     </div>
 
     <div class="display-container">
-        <form asp-controller="Books" asp-action="Create" method="post">
+        <form asp-controller="Books" asp-action="Edit" method="post">
             <div class="form-group">
-                <label>Name of Book</label>
-                <input asp-for="NameBook" class="form-control" placeholder="Name Of Book" />
+                <label>Name Of Book</label>
+                <input asp-for="NameBook" class="form-control" placeholder="Name of Book" />
             </div>
             <div class="form-group">
                 <label>Quantity</label>
-                <input asp-for="QuantityBook" class="form-control" type="number" />
+                <input asp-for="QuantityBook" class="form-control" placeholder="Quantity" type="number"/>
             </div>
             <div class="form-group">
                 <label>Price</label>
                 <input asp-for="Price" class="form-control" placeholder="Price" type="number" />
             </div>
-            <div class="form-group">
+             <div class="form-group">
                 <label>Information of Book</label>
-                <textarea asp-for="InformationBook" class="form-control" rows="4"></textarea>
+                <textarea asp-for="InformationBook" class="form-control" rows="4">@Model.InformationBook</textarea>
             </div>
             <div class="btn-wrapper">
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Edit</button>
             </div>
         </form>
     </div>
