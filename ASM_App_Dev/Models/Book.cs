@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASM_App_Dev.Models
 {
@@ -7,14 +8,19 @@ namespace ASM_App_Dev.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Name of Book can not be null")]
         [StringLength(255)]
         public string NameBook { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Quantity can not be null")]
         public int QuantityBook { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Price can not be null")]
         public int Price { get; set; }
         public string InformationBook { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Required]
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }
