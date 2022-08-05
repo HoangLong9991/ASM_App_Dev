@@ -18,11 +18,36 @@ namespace ASM_App_Dev.Controllers
         }
 
         // 2 - View Book Data
+        [HttpGet]
         public IActionResult Index()
         {
             IEnumerable<Book> books = _context.Books.ToList();
             return View(books);
         }
+
+        //3 - Create Book Data
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Book book)
+        {
+            var newBook = new Book
+            {
+                NameBook = book.NameBook,
+                QuantityBook = book.QuantityBook,
+                Price = book.Price,
+                InformationBook = book.InformationBook,
+                CreatedAt  = book.CreatedAt
+            };
+            _context.Books.Add(newBook);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
 
     }
 }
