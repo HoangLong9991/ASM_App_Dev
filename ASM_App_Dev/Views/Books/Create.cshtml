@@ -58,14 +58,17 @@
             <div class="form-group">
                 <label>Name of Book</label>
                 <input asp-for="NameBook" class="form-control" placeholder="Name Of Book" />
+                <span asp-validation-for="NameBook" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label>Quantity</label>
                 <input asp-for="QuantityBook" class="form-control" type="number" />
+                <span asp-validation-for="QuantityBook" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label>Price</label>
                 <input asp-for="Price" class="form-control" placeholder="Price" type="number" />
+                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label>Information of Book</label>

@@ -35,12 +35,17 @@ namespace ASM_App_Dev.Controllers
         [HttpPost]
         public IActionResult Create(Book book)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var newBook = new Book
             {
                 NameBook = book.NameBook,
                 QuantityBook = book.QuantityBook,
                 Price = book.Price,
-            };
+                InformationBook = book.InformationBook
+        };
             _context.Books.Add(newBook);
             _context.SaveChanges();
             return RedirectToAction("Index");
