@@ -49,5 +49,20 @@ namespace ASM_App_Dev.Controllers
         }
 
 
+        //4 - Delete Book Data
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var bookInDb = _context.Books.SingleOrDefault(t => t.Id == id);
+            if (bookInDb is null)
+            {
+                return NotFound();
+            }
+            _context.Books.Remove(bookInDb);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
     }
 }
