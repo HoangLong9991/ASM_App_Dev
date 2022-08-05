@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using ASM_App_Dev.Models;
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,5 +14,6 @@ namespace ASM_App_Dev.Data
 				: base(options)
 		{
 		}
+		public DbSet<Book> Books { get; set; }
 	}
 }
