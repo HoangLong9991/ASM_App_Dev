@@ -3,71 +3,82 @@
 *@
 @{
 }
+@model IEnumerable<Book>
+
 <script src="https://kit.fontawesome.com/a775ea28da.js" crossorigin="anonymous"></script>
 
 <style>
-.body-container{
-    display:flex;
-}
-.side-bar{
-    width: 20%;
-    margin: 0 20px 0 10px;
-}
-.fa-chart-line{
-    margin-right: 10px;
-}
-.fa-book{
-    margin-right: 10px;
-}
-.fa-list{
-    margin-right: 10px;
-}
-.fa-clipboard-user{
-    margin-right: 10px;
-}
-.display-container{
-    width: 80%;
-}
+    .body-container {
+        display: flex;
+    }
+
+    .side-bar {
+        width: 20%;
+        margin: 0 20px 0 10px;
+    }
+
+    .fa-chart-line {
+        margin-right: 10px;
+    }
+
+    .fa-book {
+        margin-right: 10px;
+    }
+
+    .fa-list {
+        margin-right: 10px;
+    }
+
+    .fa-clipboard-user {
+        margin-right: 10px;
+    }
+
+    .display-container {
+        width: 80%;
+    }
 </style>
 
 <div class="body-container">
     <div class="side-bar">
-      <ul class="list-group">
-       <li class="list-group-item"><i class="fa-solid fa-chart-line"></i>Dashboard</li>
-       <li class="list-group-item"><i class="fa-solid fa-book"></i>Book Management</li>
-       <li class="list-group-item"><i class="fa-solid fa-list"></i>Category Request</li>
-       <li class="list-group-item"><i class="fa-solid fa-clipboard-user"></i>Record Management</li>
-      </ul>
+        <ul class="list-group">
+            <li class="list-group-item"><i class="fa-solid fa-chart-line"></i>Dashboard</li>
+            <li class="list-group-item"><i class="fa-solid fa-book"></i>Book Management</li>
+            <li class="list-group-item"><i class="fa-solid fa-list"></i>Category Request</li>
+            <li class="list-group-item"><i class="fa-solid fa-clipboard-user"></i>Record Management</li>
+        </ul>
     </div>
 
     <div class="display-container">
-    <table class="table">
-    <thead>
-    <tr class="table-dark">
-      <th scope="col">#</th>
-      <th scope="col">Title</th>
-      <th scope="col">Category</th>
-      <th scope="col">Price</th>
-      <th scope="col">NoPages</th>
-      <th scope="col">Published Year</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>mdo</td>
-      <td>mdo</td>
-      <td>mdo</td>
-      <td>
-        <a class="btn btn-primary btn-sm">Details</a>
-        <a class="btn btn-secondary btn-sm">Edit</a>
-        <a class="btn btn-danger btn-sm">Delete</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <table class="table">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Name of Book</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Information</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.NameBook</td>
+                        <td>@item.QuantityBook</td>
+                        <td>@item.Price</td>
+                        <td>@item.InformationBook</td>
+                        <td>@item.CreatedAt</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm">Details</a>
+                            <a class="btn btn-secondary btn-sm">Edit</a>
+                            <a class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
