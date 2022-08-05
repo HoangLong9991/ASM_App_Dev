@@ -92,6 +92,18 @@ namespace ASM_App_Dev.Controllers
             return RedirectToAction("Index");
         }
 
+        // 6 - View Book Details
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var bookInDb = _context.Books.SingleOrDefault(t => t.Id==id);
+            if (bookInDb is null)
+            {
+                return NotFound();
+            }
+            return View(bookInDb);
+        }
+
 
     }
 }
