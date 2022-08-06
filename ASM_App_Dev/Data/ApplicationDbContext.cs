@@ -8,12 +8,14 @@ using System.Text;
 
 namespace ASM_App_Dev.Data
 {
-	public class ApplicationDbContext : IdentityDbContext
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 				: base(options)
 		{
 		}
+
 		public DbSet<Book> Books { get; set; }
+		public DbSet<Category> Categories { set; get; }
 	}
 }
