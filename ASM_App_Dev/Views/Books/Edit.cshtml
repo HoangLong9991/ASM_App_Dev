@@ -9,7 +9,8 @@
 @{
 }
 
-@model Book
+@using ASM_App_Dev.ViewModels
+@model BookCategoriesViewModel
 
 <script src="https://kit.fontawesome.com/a775ea28da.js" crossorigin="anonymous"></script>
 
@@ -17,27 +18,34 @@
     .body-container {
         display: flex;
     }
+
     .side-bar {
         width: 20%;
         margin: 0 20px 0 10px;
     }
+
     .fa-chart-line {
         margin-right: 10px;
     }
+
     .fa-book {
         margin-right: 10px;
     }
+
     .fa-list {
         margin-right: 10px;
     }
+
     .fa-clipboard-user {
         margin-right: 10px;
     }
+
     .display-container {
         width: 80%;
     }
-    .btn-wrapper{
-        margin:10px 0 10px 0;
+
+    .btn-wrapper {
+        margin: 10px 0 10px 0;
     }
 </style>
 
@@ -53,21 +61,35 @@
 
     <div class="display-container">
         <form asp-controller="Books" asp-action="Edit" method="post">
+            <input asp-for="@Model.Book.Id" type="hidden" value="@Model.Book.Id" />
+
             <div class="form-group">
                 <label>Name Of Book</label>
-                <input asp-for="NameBook" class="form-control" placeholder="Name of Book" />
+                <input asp-for="Book.NameBook" class="form-control" placeholder="Name of Book" />
+                <span asp-validation-for="Book.NameBook" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label>Quantity</label>
-                <input asp-for="QuantityBook" class="form-control" placeholder="Quantity" type="number"/>
+                <input asp-for="Book.QuantityBook" class="form-control" placeholder="Quantity" type="number" />
+                <span asp-validation-for="Book.QuantityBook" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <label>Price</label>
-                <input asp-for="Price" class="form-control" placeholder="Price" type="number" />
+                <input asp-for="Book.Price" class="form-control" placeholder="Price" type="number" />
+                <span asp-validation-for="Book.Price" class="text-danger"></span>
+
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label>Information of Book</label>
-                <textarea asp-for="InformationBook" class="form-control" rows="4">@Model.InformationBook</textarea>
+                <textarea asp-for="Book.InformationBook" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select asp-for="Book.CategoryId"
+                        asp-items="@(new SelectList(Model.Categories, "Id", "NameCategory"))"
+                        class="form-control">
+                </select>
             </div>
             <div class="btn-wrapper">
                 <button type="submit" class="btn btn-primary">Edit</button>

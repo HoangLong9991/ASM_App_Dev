@@ -1,7 +1,9 @@
 ﻿using ASM_App_Dev.Data;
 using ASM_App_Dev.Models;
+using ASM_App_Dev.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,9 @@ namespace ASM_App_Dev.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Book> books = _context.Books.ToList();
+            IEnumerable<Book> books = _context.Books
+                .Include(t=>t.Category)
+                .ToList();      
             return View(books);
         }
 
@@ -29,22 +33,32 @@ namespace ASM_App_Dev.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new BookCategoriesViewModel()
+            {
+                Categories = _context.Categories.ToList()
+            };
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(Book book)
+        public IActionResult Create(BookCategoriesViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                viewModel = new BookCategoriesViewModel
+                {
+                    Categories = viewModel.Categories.ToList()
+                };
+                return View(viewModel);
             }
+
             var newBook = new Book
             {
-                NameBook = book.NameBook,
-                QuantityBook = book.QuantityBook,
-                Price = book.Price,
-                InformationBook = book.InformationBook
+                NameBook = viewModel.Book.NameBook,
+                QuantityBook = viewModel.Book.QuantityBook,
+                Price = viewModel.Book.Price,
+                InformationBook = viewModel.Book.InformationBook,
+                CategoryId = viewModel.Book.CategoryId
         };
             _context.Books.Add(newBook);
             _context.SaveChanges();
@@ -76,21 +90,38 @@ namespace ASM_App_Dev.Controllers
                 return NotFound();
             }
 
-            return View(bookInDb);
+            var viewModel = new BookCategoriesViewModel
+            {
+                Book = bookInDb,
+                Categories = _context.Categories.ToList()
+            };
+            return View(viewModel);
         }
         [HttpPost]
-        public IActionResult Edit(Book book)
+        public IActionResult Edit(BookCategoriesViewModel viewModel)
         {
-            var bookInDb = _context.Books.SingleOrDefault(t => t.Id == book.Id);
+            var bookInDb = _context.Books.SingleOrDefault(t => t.Id == viewModel.Book.Id);
             if (bookInDb is null)
             {
                 return BadRequest();
             }
 
-            bookInDb.NameBook = book.NameBook;
-            bookInDb.QuantityBook = book.QuantityBook;
-            bookInDb.Price = book.Price;
-            bookInDb.InformationBook = book.InformationBook;
+            if (!ModelState.IsValid)
+            {
+                viewModel = new BookCategoriesViewModel
+                {
+                    Book = viewModel.Book,
+                    Categories = _context.Categories.ToList()
+                };
+                return View(viewModel);
+            }
+
+
+            bookInDb.NameBook = viewModel.Book.NameBook;
+            bookInDb.QuantityBook = viewModel.Book.QuantityBook;
+            bookInDb.Price = viewModel.Book.Price;
+            bookInDb.InformationBook = viewModel.Book.InformationBook;
+            bookInDb.CategoryId = viewModel.Book.CategoryId;
 
             _context.SaveChanges();
 
@@ -101,7 +132,9 @@ namespace ASM_App_Dev.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var bookInDb = _context.Books.SingleOrDefault(t => t.Id==id);
+            var bookInDb = _context.Books
+                .Include(t => t.Category)
+                .SingleOrDefault(t => t.Id == id);
             if (bookInDb is null)
             {
                 return NotFound();
