@@ -51,6 +51,17 @@ namespace ASM_App_Dev.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+        
+            [Display(Name = "Full Name")]
+            [Required]
+            [StringLength(255, ErrorMessage = "You must input your Full Name")]
+            public string FullName { get; set; }
+
+            [Required]
+            [Display(Name = "Address")]
+            [StringLength(255, ErrorMessage = "Please input your Address")]
+            public string Address { get; set; }
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -75,7 +86,7 @@ namespace ASM_App_Dev.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Address = Input.Address, FullName = Input.FullName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
