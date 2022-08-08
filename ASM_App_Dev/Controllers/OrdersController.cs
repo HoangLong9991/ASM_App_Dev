@@ -4,6 +4,7 @@ using ASM_App_Dev.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -110,13 +111,28 @@ namespace ASM_App_Dev.Controllers
 		[HttpGet]
 		public IActionResult Purchase()
 		{
-			var orderToBuy = context.Orders.SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
+	
+			var orderToBuy = context.Orders.Include(t => t.OrderDetails).SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
+
+			foreach (var item in orderToBuy.OrderDetails)
+			{
+				var productToBuy = context.Books.SingleOrDefault(t => t.Id == item.BookId);
+
+				if (productToBuy.QuantityBook > 0)
+				{
+					productToBuy.QuantityBook -= item.Quantity;
+
+				}
+				else
+				{
+					var error = item.Book.NameBook + "is out of stock";
+					return RedirectToAction("Index", "OrderDetails");
+
+				}
+			}
 
 			orderToBuy.StatusOrder = OrderStatus.InProgress;
-			//foreach(var item in orderToBuy.OrderDetails)
-			//{
-			//	var productToBuy = context.Products.SingleOrDefault(t => t.)
-			//}
+
 			context.SaveChanges();
 			return RedirectToAction("Index");
 		}
