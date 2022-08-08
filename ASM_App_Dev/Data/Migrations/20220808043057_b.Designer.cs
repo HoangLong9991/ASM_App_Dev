@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASM_App_Dev.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220808035552_addUserIdInOrder")]
-    partial class addUserIdInOrder
+    [Migration("20220808043057_b")]
+    partial class b
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
