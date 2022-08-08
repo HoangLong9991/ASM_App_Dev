@@ -17,6 +17,7 @@ namespace ASM_App_Dev.Models
         public int Price { get; set; }
         public string InformationBook { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public byte[] Image { get; set; }
 
         [Required]
         [ForeignKey("Category")]
