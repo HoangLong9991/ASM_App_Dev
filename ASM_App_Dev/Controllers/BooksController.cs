@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace ASM_App_Dev.Controllers
     {
         // 1 - Declare ApplicationDbContext
         private ApplicationDbContext _context;
-        public  BooksController(ApplicationDbContext context)
+        public BooksController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -52,7 +53,7 @@ namespace ASM_App_Dev.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(BookCategoriesViewModel viewModel)
+        public async Task<IActionResult> Create(BookCategoriesViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -63,16 +64,22 @@ namespace ASM_App_Dev.Controllers
                 return View(viewModel);
             }
 
-            var newBook = new Book
+            using (var memoryStream = new MemoryStream())
             {
-                NameBook = viewModel.Book.NameBook,
-                QuantityBook = viewModel.Book.QuantityBook,
-                Price = viewModel.Book.Price,
-                InformationBook = viewModel.Book.InformationBook,
-                CategoryId = viewModel.Book.CategoryId
-        };
-            _context.Books.Add(newBook);
-            _context.SaveChanges();
+                await viewModel.FormFile.CopyToAsync(memoryStream);
+
+                var newBook = new Book
+                {
+                    NameBook = viewModel.Book.NameBook,
+                    QuantityBook = viewModel.Book.QuantityBook,
+                    Price = viewModel.Book.Price,
+                    InformationBook = viewModel.Book.InformationBook,
+                    Image = memoryStream.ToArray(),
+                    CategoryId = viewModel.Book.CategoryId
+                };
+                _context.Books.Add(newBook);
+               await _context.SaveChangesAsync();
+            }
             return RedirectToAction("Index");
         }
 
@@ -151,6 +158,10 @@ namespace ASM_App_Dev.Controllers
             {
                 return NotFound();
             }
+            string imageBase64Data = Convert.ToBase64String(bookInDb.Image);
+            string image = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
+            ViewBag.Image = image;
+
             return View(bookInDb);
         }
 

@@ -42,11 +42,13 @@
     .btn-wrapper {
         margin: 10px 0 10px 0;
     }
-    #book-management{
+
+    #book-management {
         color: black;
         text-decoration: none;
     }
-    #category-request{
+
+    #category-request {
         color: black;
         text-decoration: none;
     }
@@ -62,7 +64,7 @@
     </div>
 
     <div class="display-container">
-        <form asp-controller="Books" asp-action="Create" method="post">
+        <form enctype="multipart/form-data" asp-controller="Books" asp-action="Create" method="post">
             <div class="form-group">
                 <label>Name of Book</label>
                 <input asp-for="Book.NameBook" class="form-control" placeholder="Name Of Book" />
@@ -88,6 +90,16 @@
                         asp-items="@(new SelectList(Model.Categories, "Id", "NameCategory"))"
                         class="form-control">
                 </select>
+            </div>
+            <div class="form-group">
+                <dl>
+                    <dt>
+                        <label asp-for="@Model.FormFile"></label>
+                    </dt>
+                    <dd>
+                        <input asp-for="@Model.FormFile" type="file">
+                    </dd>
+                </dl>
             </div>
             <div class="btn-wrapper">
                 <button type="submit" class="btn btn-primary">Create</button>
