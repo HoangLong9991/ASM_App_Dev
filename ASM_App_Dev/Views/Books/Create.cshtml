@@ -42,14 +42,21 @@
     .btn-wrapper {
         margin: 10px 0 10px 0;
     }
+    #book-management{
+        color: black;
+        text-decoration: none;
+    }
+    #category-request{
+        color: black;
+        text-decoration: none;
+    }
 </style>
 
 <div class="body-container">
     <div class="side-bar">
         <ul class="list-group">
-            <li class="list-group-item"><i class="fa-solid fa-chart-line"></i>Dashboard</li>
-            <li class="list-group-item"><i class="fa-solid fa-book"></i>Book Management</li>
-            <li class="list-group-item"><i class="fa-solid fa-list"></i>Category Request</li>
+            <li class="list-group-item"><i class="fa-solid fa-book"></i><a id="book-management" asp-controller="Books" asp-action="Index">Book Management</a></li>
+            <li class="list-group-item"><i class="fa-solid fa-list"></i><a id="category-request" asp-controller="Categories" asp-action="Index">Category Request</a></li>
             <li class="list-group-item"><i class="fa-solid fa-clipboard-user"></i>Record Management</li>
         </ul>
     </div>

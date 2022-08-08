@@ -5,8 +5,10 @@ using ASM_App_Dev.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASM_App_Dev.Controllers
 {
@@ -19,14 +21,16 @@ namespace ASM_App_Dev.Controllers
             _context = context;
         }
 
-        // 2 - View Book Data
+        // 2 - Search Book by Name
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            IEnumerable<Book> books = _context.Books
-                .Include(t=>t.Category)
-                .ToList();      
-            return View(books);
+            var books = from book in _context.Books select book;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s => s.NameBook!.Contains(searchString));
+            }
+            return View(await books.ToListAsync());
         }
 
         // 3 - Create Book Data
@@ -47,7 +51,7 @@ namespace ASM_App_Dev.Controllers
             {
                 viewModel = new BookCategoriesViewModel
                 {
-                    Categories = viewModel.Categories.ToList()
+                    Categories = _context.Categories.ToList()
                 };
                 return View(viewModel);
             }
@@ -97,6 +101,7 @@ namespace ASM_App_Dev.Controllers
             };
             return View(viewModel);
         }
+
         [HttpPost]
         public IActionResult Edit(BookCategoriesViewModel viewModel)
         {
