@@ -30,8 +30,15 @@ namespace ASM_App_Dev.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 books = books.Where(s => s.NameBook!.Contains(searchString));
+                return View(await books.ToListAsync());
             }
-            return View(await books.ToListAsync());
+            
+
+						else
+			      {
+                var booksToBuy = _context.Books.ToList();
+                return View(booksToBuy);
+			      }
         }
 
         // 3 - Create Book Data
