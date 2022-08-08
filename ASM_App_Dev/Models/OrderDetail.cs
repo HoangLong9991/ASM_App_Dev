@@ -14,7 +14,6 @@ namespace ASM_App_Dev.Models
 		[ForeignKey("Book")]
 		public int BookId { get; set; }
 		public Book Book { get; set; }
-		[Required(ErrorMessage = "Quantity can not be null")]
 		public int Quantity { get; set; }
 		public int Price { get; set; }
 	}

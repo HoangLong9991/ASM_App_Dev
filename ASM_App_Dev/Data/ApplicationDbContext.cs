@@ -33,5 +33,8 @@ namespace ASM_App_Dev.Data
         }
 public DbSet<Book> Books { get; set; }
 public DbSet<Category> Categories { set; get; }
-	}
+    public DbSet<Order> Orders { set; get; }
+    public DbSet<OrderDetail> OrderDetails { set; get; }
+
+  }
 }
