@@ -30,15 +30,8 @@ namespace ASM_App_Dev.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 books = books.Where(s => s.NameBook!.Contains(searchString));
-                return View(await books.ToListAsync());
             }
-            
-
-						else
-			      {
-                var booksToBuy = _context.Books.ToList();
-                return View(booksToBuy);
-			      }
+                return View(await books.ToListAsync());
         }
 
         // 3 - Create Book Data
@@ -78,7 +71,7 @@ namespace ASM_App_Dev.Controllers
                     CategoryId = viewModel.Book.CategoryId
                 };
                 _context.Books.Add(newBook);
-               await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index");
         }

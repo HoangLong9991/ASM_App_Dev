@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ASM_App_Dev.Utils;
 
 namespace ASM_App_Dev.Models
 {
+    [Authorize(Roles = Role.STORE_OWNER)]
     public class Book
     {
         [Key]

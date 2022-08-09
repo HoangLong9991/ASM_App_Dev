@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<Book>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-3 mb-4 mb-md-0" style=" margin-bottom: 10px !important">
+                    <div class="card" style=" border-radius: 10px !important ">
+                        <a asp-controller="Products" asp-action="Detail" asp-route-id=@item.Id>
+                            <div style=" height: 240px; align-content: center;display: grid;">
+                                <img src=""
+                                 class="card-img-top" style=" border-radius: 10px !important; display: block;  height: auto;" />
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <a asp-controller="Products" asp-action="Detail" asp-route-id=@item.Id>
+                                    <h5 class="mb-0">@item.NameBook</h5>
+                                </a>
+                            </div>
+                            <div>
+                                <span src="" class="text-dark mb-0">Price: @item.Price VND</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <p class="text-muted mb-0" src="">Available:<span class="fw-bold">@item.QuantityBook</span></p>
+                                <a asp-controller="Orders" asp-action="Create" asp-route-id=@item.Id>Add To Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -31,14 +31,12 @@ namespace ASM_App_Dev
 			services.AddDbContext<ApplicationDbContext>(options =>
 					options.UseSqlServer(
 							Configuration.GetConnectionString("DefaultConnection")));
-			//services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+			services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 			//		.AddEntityFrameworkStores<ApplicationDbContext>();
 
-			services.AddIdentity<ApplicationUser, IdentityRole>() 
-			.AddEntityFrameworkStores<ApplicationDbContext>()
-			.AddDefaultUI()
-			.AddDefaultTokenProviders();
-
+			
+		    .AddRoles<IdentityRole>()
+		    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddControllersWithViews();
 			services.AddRazorPages();
