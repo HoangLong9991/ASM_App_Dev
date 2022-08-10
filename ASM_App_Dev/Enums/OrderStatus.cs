@@ -3,7 +3,7 @@
 	public enum OrderStatus
 	{
 		Unconfirmed,
-			InProgress,
-			Successful
+		InProgress,
+		Successful
 	}
 }
