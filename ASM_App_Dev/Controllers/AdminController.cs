@@ -122,8 +122,6 @@ namespace ASM_App_Dev.Controllers
 
             //var idRole = "0d3151ac-ebae-47d5-8bd1-ac783afafee2";
 
-            return View();
-
         }
 
 
