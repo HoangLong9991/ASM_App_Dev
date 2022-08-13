@@ -8,7 +8,7 @@ namespace ASM_App_Dev.ViewModels
 {
     public class AdminViewModel
     {
-        public IEnumerable<ApplicationUser> UserWithPermission { set; get; }
+        public List<ApplicationUser> Users { set; get; } = new List<ApplicationUser>();
 
         [BindProperty]
         public InputModel Input { get; set; }

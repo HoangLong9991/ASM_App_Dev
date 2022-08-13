@@ -1,15 +1,13 @@
 ﻿@using ASM_App_Dev.Utils
 @using ASM_App_Dev.ViewModels
 @using Microsoft.AspNetCore.Identity
-<h1>This is Admin page</h1>
-
-
 
 @model AdminViewModel
 
-@{
-    var RoleList = (List<IdentityRole>)ViewData["RoleList"];
-}
+<h1>This is Admin page</h1>
+
+
+<a asp-action="VerifyCategoryRequest" asp-controller="Admin" class="btn btn-primary">Verify Category Request</a>
 
 
 <h1>All Users</h1>
@@ -25,9 +23,9 @@
 
 
    <form method="POST">
-       <select asp-for="Input.Role" class="form-control"
+       <select asp-for="@Model.Input.Role" class="form-control"
                         asp-items="@Model.RoleSelectList">
-                    <option value="">-- Select Role --</option>
+                   @* <option value="">-- Select Role --</option>*@
         </select>
         <button type="submit" class="btn btn-primary">Select</button>
   </form>
@@ -36,17 +34,19 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">ID User</th>
       <th scope="col">User Email</th>
+      <th scope="col">Email Confirmed</th>
       <th scope="col">Action</th>
     </tr> 
   </thead>
   <tbody>
-    @foreach (var item in Model.UserWithPermission){
+    @foreach (var item in Model.Users){
       <tr>
         <th scope="row">@item.Id</th>
         <td>@item.Email</td>
-        <td><a asp-action="ChangePassword" asp-controller="Admin">Change Password</a></td>
+                <td scope="row">@item.EmailConfirmed</td>
+        <td><a asp-action="ChangePassword" asp-controller="Admin" asp-route-id=@item.Id>Change Password</a></td>
       </tr>
   }
   </tbody>

@@ -16,3 +16,5 @@ namespace ASM_App_Dev.ViewModels
         public IFormFile FormFile { get; set; }
     }
 }
+
+

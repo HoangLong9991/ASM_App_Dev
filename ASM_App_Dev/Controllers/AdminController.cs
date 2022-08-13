@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Net.Http;
 using static ASM_App_Dev.Areas.Identity.Pages.Account.LoginModel;
 
 namespace ASM_App_Dev.Controllers
@@ -19,112 +22,99 @@ namespace ASM_App_Dev.Controllers
         private ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public SelectList RoleSelectList { get; set; }
-        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public SelectList RoleSelectList { get; set; } = new SelectList(new List<string>
+          {
+            "All User",
+            Role.STORE_OWNER,
+            Role.CUSTOMER
+          }
+      );
+        public AdminController(ApplicationDbContext context, 
+                                UserManager<ApplicationUser> userManager, 
+                                RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-
+            
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            //List<SelectListItem> roleSelect = new List<SelectListItem>();
 
-            //roleSelect.Add(new SelectListItem
-            //{
-            //    Text = "RoleAdmin",
-            //    Value = Role.ADMIN
-            //});
-            //roleSelect.Add(new SelectListItem
-            //{
-            //    Text = "RoleStoreOwner",
-            //    Value = Role.STORE_OWNER
-            //});
-            //roleSelect.Add(new SelectListItem
-            //{
-            //    Text = "RoleCustomer",
-            //    Value = Role.CUSTOMER
-            //});
-            //ViewBag.RoleSelectList = roleSelect.ToList();
-            //var userWithPermission = _userManager.GetUsersInRoleAsync(Role.CUSTOMER).Result;
+            var model = new AdminViewModel();
 
-            var roleList = _context.Roles.ToList();
-
-            ViewData["RoleList"] = roleList;
-
-            RoleSelectList = new SelectList(new List<string>
-          {
-            Role.ADMIN,
-            Role.STORE_OWNER,
-            Role.CUSTOMER
-          }
-      );
-
-            var adminUser = new AdminViewModel()
+            foreach (var user in _userManager.Users)
             {
-                UserWithPermission = _userManager.GetUsersInRoleAsync(Role.CUSTOMER).Result
-            };
+                if (!await _userManager.IsInRoleAsync(user, Role.ADMIN))
+                {
+                    model.Users.Add(user);
+                }
+            }
 
-            adminUser.RoleSelectList = RoleSelectList; 
+            model.RoleSelectList = RoleSelectList; 
 
 
-            return View(adminUser);
+            return View(model);
         }
 
+
         [HttpPost]
-        public IActionResult Index(AdminViewModel adminViewModel)
+        public async Task<IActionResult> Index(AdminViewModel adminViewModel)
         {
             var adminUser = new AdminViewModel();
+            
 
-            RoleSelectList = new SelectList(new List<string>
-          {
-            Role.ADMIN,
-            Role.STORE_OWNER,
-            Role.CUSTOMER
-          }
-      );
-            var roleSelected = adminViewModel.Input.Role; 
+            var roleSelectedInView = adminViewModel.Input.Role; 
 
-            if(roleSelected == Role.STORE_OWNER)
+            if(roleSelectedInView == Role.STORE_OWNER)
             {
-                adminUser = new AdminViewModel()
-                {
-                    UserWithPermission = _userManager.GetUsersInRoleAsync(Role.STORE_OWNER).Result
-                };
+                //adminUser = new AdminViewModel()
+                //{
+                //    UserWithPermission = _userManager.GetUsersInRoleAsync(Role.STORE_OWNER).Result
+                //};
+
+                adminUser = getUserByRole(Role.STORE_OWNER); 
             }
-            else if(roleSelected == Role.CUSTOMER)
+            else if(roleSelectedInView == Role.CUSTOMER)
             {
-                adminUser = new AdminViewModel()
-                {
-                    UserWithPermission = _userManager.GetUsersInRoleAsync(Role.CUSTOMER).Result
-                };
+                adminUser = getUserByRole(Role.CUSTOMER);
             }
             else
             {
-                adminUser = new AdminViewModel()
+                adminUser = new AdminViewModel();
+
+                foreach (var user in _userManager.Users)
                 {
-                    UserWithPermission = _userManager.GetUsersInRoleAsync(Role.ADMIN).Result
-                };
+                    if (!await _userManager.IsInRoleAsync(user, Role.ADMIN))
+                    {
+                        adminUser.Users.Add(user);
+                    }
+                }
             }
 
             adminUser.RoleSelectList = RoleSelectList;
-
             return View(adminUser);
-
-
-            //var roleList = _context.Roles.ToList();
-            //ViewData["RoleList"] = roleList;
-
-            //var idRole = "0d3151ac-ebae-47d5-8bd1-ac783afafee2";
-
         }
 
+   
 
+
+       
+
+
+        [NonAction]
+        private AdminViewModel getUserByRole(string role)
+        {
+            var adminUser = new AdminViewModel()
+            {
+                Users = (List<ApplicationUser>)_userManager.GetUsersInRoleAsync(role).Result
+            };
+            return adminUser;
+        }
 
 
 
