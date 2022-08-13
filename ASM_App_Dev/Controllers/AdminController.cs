@@ -15,8 +15,11 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using static ASM_App_Dev.Areas.Identity.Pages.Account.LoginModel;
 
+
+
 namespace ASM_App_Dev.Controllers
 {
+    [Authorize(Roles = Role.ADMIN)]
     public class AdminController : Controller
     {
         private ApplicationDbContext _context;
@@ -138,6 +141,7 @@ namespace ASM_App_Dev.Controllers
             {
                 RejectCategoryRequest(id);
             }
+           
 
             return View(listCategory);
         }

@@ -27,5 +27,10 @@
             <a asp-controller="Customer" asp-action="Index" class="btn btn-primary">Go To Shopping</a>
 
         }
+        if (User.IsInRole(Role.ADMIN))
+        {
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-primary">Go To Manager</a>
+
+        }
     }
 </div>
