@@ -100,7 +100,29 @@ namespace ASM_App_Dev.Controllers
             return View(adminUser);
         }
 
-   
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(string id, [Bind("PasswordHash")] ApplicationUser user)
+        {
+            var getUser = _context.Users.SingleOrDefault(t => t.Id == id);
+            var newPassword = user.PasswordHash; 
+
+            if (getUser == null)
+            {
+                return BadRequest();
+            }
+
+            getUser.PasswordHash = _userManager.PasswordHasher.HashPassword(getUser, newPassword);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
 
 
        
