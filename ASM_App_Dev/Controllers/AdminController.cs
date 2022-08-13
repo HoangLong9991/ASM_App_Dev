@@ -124,6 +124,57 @@ namespace ASM_App_Dev.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult VerifyCategoryRequest(string name, int id)
+        {
+            var listCategory = from Category in _context.Categories select Category;
+            var a = _context.Categories;
+
+            if(name == "accept")
+            {
+                AcceptCategoryRequest(id);
+            }
+            if(name == "reject")
+            {
+                RejectCategoryRequest(id);
+            }
+
+            return View(listCategory);
+        }
+
+       
+
+        [HttpGet]
+        public IActionResult AcceptCategoryRequest(int id)
+        {
+            var categoryVerify = _context.Categories.SingleOrDefault(c => c.Id == id);
+
+            if (categoryVerify == null)
+            {
+                return BadRequest();
+            }
+
+            categoryVerify.Status = Enums.CategoryStatus.Accepted;
+            _context.SaveChanges();
+               
+            return RedirectToAction("VerifyCategoryRequest");
+        }
+
+        [HttpGet]
+        public IActionResult RejectCategoryRequest(int id)
+        {
+            var categoryVerify = _context.Categories.SingleOrDefault(c => c.Id == id);
+
+            if (categoryVerify == null)
+            {
+                return BadRequest();
+            }
+
+            categoryVerify.Status = Enums.CategoryStatus.Rejected;
+            _context.SaveChanges();
+
+            return RedirectToAction("VerifyCategoryRequest");
+        }
 
        
 
