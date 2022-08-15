@@ -26,11 +26,11 @@ namespace ASM_App_Dev.Controllers
 		{
 			if (id != 0)
 			{
-				IEnumerable<OrderDetail> orderDetailByIdOrder = context.OrderDetails
+				IEnumerable<OrderDetail> orderDetailByIdOrder = context.OrderDetails.Include(t => t.Order)
 					.Include(t => t.Book).Where(t => t.OrderId == id).ToList();
 				return View(orderDetailByIdOrder);
 			}
-			IEnumerable<OrderDetail> orderDetailUncomfirm = context.OrderDetails.Include(t => t.Book)
+			IEnumerable<OrderDetail> orderDetailUncomfirm = context.OrderDetails.Include(t => t.Book).Include(t => t.Order)
 				.Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed 
 				&& t.Order.UserId == userManager.GetUserId(User)).ToList();
 

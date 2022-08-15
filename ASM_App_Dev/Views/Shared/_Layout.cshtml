@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+@using ASM_App_Dev.Utils
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,9 +24,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark"  asp-controller="Books" asp-action="Index">Home</a>
                         </li>
+                        @if(User.IsInRole(Role.CUSTOMER)){
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-controller="OrderDetails" asp-action="Index">Cart</a>
                         </li>
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">News</a>
+                        </li>
+                        }
                     </ul>
                 </div>
             </div>
