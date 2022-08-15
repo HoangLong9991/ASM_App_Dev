@@ -30,17 +30,18 @@ namespace ASM_App_Dev
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
 					options.UseSqlServer(
-							Configuration.GetConnectionString("DeployConnection")));
-			//services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-			//		.AddEntityFrameworkStores<ApplicationDbContext>();
+							Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+               //		.AddEntityFrameworkStores<ApplicationDbContext>();
+               .AddRoles<IdentityRole>()
+               .AddEntityFrameworkStores<ApplicationDbContext>();
 
-			services.AddIdentity<ApplicationUser, IdentityRole>() 
-			.AddEntityFrameworkStores<ApplicationDbContext>()
-			.AddDefaultUI()
-			.AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //.AddEntityFrameworkStores<ApplicationDbContext>()
+            //.AddDefaultUI()
+            //.AddDefaultTokenProviders();
 
-
-			services.AddControllersWithViews();
+            services.AddControllersWithViews();
 			services.AddRazorPages();
 		}
 

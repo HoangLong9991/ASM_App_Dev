@@ -1,19 +1,23 @@
-﻿using System;
+﻿using ASM_App_Dev.Models;
+using ASM_App_Dev.Utils;
+
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using ASM_App_Dev.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
+
 
 namespace ASM_App_Dev.Areas.Identity.Pages.Account
 {
@@ -22,21 +26,24 @@ namespace ASM_App_Dev.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _emailSender = emailSender;
         }
-
+        public SelectList RoleSelectList { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -51,7 +58,7 @@ namespace ASM_App_Dev.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-        
+
             [Display(Name = "Full Name")]
             [Required]
             [StringLength(255, ErrorMessage = "You must input your Full Name")]
@@ -72,10 +79,20 @@ namespace ASM_App_Dev.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            public string Role { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            RoleSelectList = new SelectList(new List<string>
+          {
+            Role.ADMIN,
+            Role.STORE_OWNER,
+            Role.CUSTOMER
+          }
+        );
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -86,11 +103,17 @@ namespace ASM_App_Dev.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Address = Input.Address, FullName = Input.FullName };
+                var user = new ApplicationUser{ 
+                    UserName = Input.Email, 
+                    Email = Input.Email, 
+                    Address = Input.Address, 
+                    FullName = Input.FullName
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    IdentityResult roleresult = await _userManager.AddToRoleAsync(user, Input.Role);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -118,6 +141,14 @@ namespace ASM_App_Dev.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+            RoleSelectList = new SelectList(new List<string>
+          {
+            Role.ADMIN,
+            Role.STORE_OWNER,
+            Role.CUSTOMER
+          }
+      );
 
             // If we got this far, something failed, redisplay form
             return Page();
