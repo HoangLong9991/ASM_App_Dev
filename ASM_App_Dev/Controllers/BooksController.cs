@@ -1,7 +1,9 @@
 ﻿using ASM_App_Dev.Data;
 using ASM_App_Dev.Models;
+using ASM_App_Dev.Utils;
 using ASM_App_Dev.ViewModels;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace ASM_App_Dev.Controllers
 {
+    [Authorize(Roles = Role.STORE_OWNER)]
     public class BooksController : Controller
     {
         // 1 - Declare ApplicationDbContext
@@ -31,7 +34,7 @@ namespace ASM_App_Dev.Controllers
             {
                 books = books.Where(s => s.NameBook!.Contains(searchString));
             }
-                return View(await books.ToListAsync());
+            return View(await books.ToListAsync());
         }
 
         // 3 - Create Book Data
@@ -40,7 +43,9 @@ namespace ASM_App_Dev.Controllers
         {
             var viewModel = new BookCategoriesViewModel()
             {
-                Categories = _context.Categories.ToList()
+                Categories = _context.Categories
+                .Where(c => c.Status == Enums.CategoryStatus.Accepted)
+                .ToList()
             };
             return View(viewModel);
         }
@@ -52,7 +57,9 @@ namespace ASM_App_Dev.Controllers
             {
                 viewModel = new BookCategoriesViewModel
                 {
-                    Categories = _context.Categories.ToList()
+                    Categories = _context.Categories
+                    .Where(c => c.Status == Enums.CategoryStatus.Accepted)
+                    .ToList()
                 };
                 return View(viewModel);
             }
@@ -104,7 +111,9 @@ namespace ASM_App_Dev.Controllers
             var viewModel = new BookCategoriesViewModel
             {
                 Book = bookInDb,
-                Categories = _context.Categories.ToList()
+                Categories = _context.Categories
+                .Where(c => c.Status == Enums.CategoryStatus.Accepted)
+                .ToList()
             };
             return View(viewModel);
         }
@@ -123,7 +132,9 @@ namespace ASM_App_Dev.Controllers
                 viewModel = new BookCategoriesViewModel
                 {
                     Book = viewModel.Book,
-                    Categories = _context.Categories.ToList()
+                    Categories = _context.Categories
+                   .Where(c => c.Status == Enums.CategoryStatus.Accepted)
+                   .ToList()
                 };
                 return View(viewModel);
             }
