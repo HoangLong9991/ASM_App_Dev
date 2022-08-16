@@ -21,7 +21,7 @@ namespace ASM_App_Dev.Controllers
 			this.context = context;
 			this.userManager = userManager;
 		}
-
+		[HttpGet]
 		public IActionResult Index(int id)
 		{
 			if (id != 0)
@@ -35,6 +35,23 @@ namespace ASM_App_Dev.Controllers
 				&& t.Order.UserId == userManager.GetUserId(User)).ToList();
 
 			return View(orderDetailUncomfirm);
+		}
+		[HttpGet]
+		public IActionResult Delete (int id)
+		{
+			var orderDetail = context.OrderDetails.Include(t => t.Order).SingleOrDefault(t => t.Id == id);
+			orderDetail.Order.PriceOrder = 0;
+			context.Remove(orderDetail);
+			context.SaveChanges();		
+			List<OrderDetail> orderDetails = context.OrderDetails.Include(t => t.Order).Where(t => t.OrderId == orderDetail.OrderId).ToList();
+
+			foreach (var item in orderDetails)
+			{			
+				item.Order.PriceOrder += item.Price;
+			}
+			context.SaveChanges();
+
+			return RedirectToAction("Index");
 		}
 	}
 }
