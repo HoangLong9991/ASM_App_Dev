@@ -62,7 +62,7 @@ namespace ASM_App_Dev.Controllers
 
 			}
 			context.SaveChanges();
-			return RedirectToAction("Index", "Orders");
+			return RedirectToAction("Index", "OrderDetails");
 		}
 
 		[NonAction]
@@ -135,6 +135,7 @@ namespace ASM_App_Dev.Controllers
 
 			context.SaveChanges();
 			return RedirectToAction("Index");
+
 		}
 	}
 }
