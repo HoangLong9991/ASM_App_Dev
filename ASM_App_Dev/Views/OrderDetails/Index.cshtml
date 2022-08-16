@@ -1,52 +1,84 @@
-﻿@model IEnumerable<ASM_App_Dev.Models.OrderDetail>
+﻿@model Cart
 @using ASM_App_Dev.Enums
+@using ASM_App_Dev.ViewModels
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>My Cart</h1>
-
 <p>
     <a asp-controller="Orders" asp-action="Index">List Orders</a>
 </p>
+<form asp-controller="OrderDetails" asp-action="Edit" method="post">
+
 <table class="table">
     <thead>
         <tr>
 
             <th>
-                @Html.DisplayNameFor(model => model.Book.NameBook)
+                Name Book
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+               Quantity
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th>Action</th>
         </tr>
     </thead>
+
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+@for (int i = 0; i < Model.orderDetails.Count; i++){
+
+         <tr>
+                <input asp-for="@Model.orderDetails[i].Id" type="hidden" value="@Model.orderDetails[i].Id" id="@Model.orderDetails[i].Id">
+                <input asp-for="@Model.orderDetails[i].OrderId" type="hidden" value="@Model.orderDetails[i].OrderId">
 
             <td>
-                @Html.DisplayFor(modelItem => item.Book.NameBook)
+                @Html.DisplayFor(modelItem => Model.orderDetails[i].Book.NameBook)
+                <input asp-for="@Model.orderDetails[i].BookId" type="hidden" value="@Model.orderDetails[i].BookId">
+
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
+                @if (Model.orderDetails[i].Order.StatusOrder == OrderStatus.Unconfirmed){
+                <input asp-for="@Model.orderDetails[i].Quantity"  value="@Model.orderDetails[i].Quantity" id = "quantity @Model.orderDetails[i].Id" 
+                onchange="refresh(document.getElementById('@Model.orderDetails[i].Id').value,
+                                    document.getElementById('quantity @Model.orderDetails[i].Id').value,
+                                    document.getElementById('price @Model.orderDetails[i].Id').value)"/>}
+                else {
+                @Html.DisplayFor(modelItem => Model.orderDetails[i].Quantity)
+                }
+                
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                <p  id="refreshPrice @Model.orderDetails[i].Id" >@Model.orderDetails[i].Price</p>
+                <input asp-for="@Model.orderDetails[i].Book.Price" type="hidden" value="@Model.orderDetails[i].Book.Price" id="price @Model.orderDetails[i].Id">
+
             </td>
             <td>
                 
-                @if(@item.Order.StatusOrder == OrderStatus.Unconfirmed){
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete | </a>}
-                <a asp-action="Details" asp-route-id="@item.Id">Details </a> 
+                @if(@Model.orderDetails[i].Order.StatusOrder == OrderStatus.Unconfirmed){
+                    <a asp-action="Delete" asp-route-id="@Model.orderDetails[i].Id">Delete | </a>}
+                <a asp-action="Details" asp-route-id="@Model.orderDetails[i].Id">Details </a> 
                 
             </td>
         </tr>
 }
     </tbody>
+
 </table>
-<a asp-controller="Orders" asp-action="Purchase" class="btn btn-info">Purchase</a>
+<h3>Total: @Model.totalPrice </h3>
+
+<button type="submit" class="btn btn-info">Purchase</button>
+ </form>
+
+<script>
+function refresh(idOrderDetail, quantity, price) {
+    var a = "refreshPrice " + idOrderDetail;
+    document.getElementById(a).innerHTML = quantity * price;
+}
+
+
+
+</script>

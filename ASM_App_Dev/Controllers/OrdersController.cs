@@ -68,10 +68,12 @@ namespace ASM_App_Dev.Controllers
 		[NonAction]
 		internal int GetPriceOfOrder(int idOrder)
 		{
-			var orderDetails = context.OrderDetails.Where(t => t.OrderId == idOrder);
+			var orderDetails = context.OrderDetails.Include(t => t.Book).Where(t => t.OrderId == idOrder);
 			int totalPrice = 0;
 			foreach (var item in orderDetails)
 			{
+				item.Price = item.Quantity * item.Book.Price;
+
 				totalPrice += item.Price;
 			}
 			return totalPrice;
@@ -118,7 +120,7 @@ namespace ASM_App_Dev.Controllers
 			{
 				var productToBuy = context.Books.SingleOrDefault(t => t.Id == item.BookId);
 
-				if (productToBuy.QuantityBook > 0)
+				if (productToBuy.QuantityBook > item.Quantity)
 				{
 					productToBuy.QuantityBook -= item.Quantity;
 
@@ -130,7 +132,7 @@ namespace ASM_App_Dev.Controllers
 
 				}
 			}
-
+			orderToBuy.PriceOrder = GetPriceOfOrder(orderToBuy.Id);
 			orderToBuy.StatusOrder = OrderStatus.InProgress;
 
 			context.SaveChanges();
