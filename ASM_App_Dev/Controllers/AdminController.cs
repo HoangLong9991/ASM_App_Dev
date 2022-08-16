@@ -19,7 +19,7 @@ using static ASM_App_Dev.Areas.Identity.Pages.Account.LoginModel;
 
 namespace ASM_App_Dev.Controllers
 {
-    [Authorize(Roles = Role.ADMIN)]
+    //[Authorize(Roles = Role.ADMIN)]
     public class AdminController : Controller
     {
         private ApplicationDbContext _context;
@@ -41,7 +41,9 @@ namespace ASM_App_Dev.Controllers
             _roleManager = roleManager;
         }
 
-            
+        public List<Category> CategoriesHidden { set; get; } = new List<Category>();
+
+
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -69,8 +71,7 @@ namespace ASM_App_Dev.Controllers
         public async Task<IActionResult> Index(AdminViewModel adminViewModel)
         {
             var adminUser = new AdminViewModel();
-            
-
+         
             var roleSelectedInView = adminViewModel.Input.Role; 
 
             if(roleSelectedInView == Role.STORE_OWNER)
@@ -127,26 +128,39 @@ namespace ASM_App_Dev.Controllers
         }
 
 
+
+        [HttpGet]
+        public IActionResult ShowCategoriesInProgress()
+        {
+            var categories = _context.Categories
+                .Where(t => t.Status == Enums.CategoryStatus.InProgess)
+                .ToList();
+
+            return View("VerifyCategoryRequest", categories);
+        }
+
         [HttpGet]
         public IActionResult VerifyCategoryRequest(string name, int id)
         {
-            var listCategory = from Category in _context.Categories select Category;
-            var a = _context.Categories;
 
-            if(name == "accept")
+            var listCategory = from Category in _context.Categories select Category;           
+            var categoryAfterUpdate = _context.Categories.SingleOrDefault(c => c.Id == id);
+
+            if (name == "accept")
             {
                 AcceptCategoryRequest(id);
+
             }
-            if(name == "reject")
+            if (name == "reject")
+
             {
                 RejectCategoryRequest(id);
             }
-           
 
-            return View(listCategory);
+            return RedirectToAction(nameof(ShowCategoriesInProgress));
         }
 
-       
+
 
         [HttpGet]
         public IActionResult AcceptCategoryRequest(int id)

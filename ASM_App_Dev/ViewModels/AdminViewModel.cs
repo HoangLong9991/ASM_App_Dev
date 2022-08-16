@@ -9,6 +9,8 @@ namespace ASM_App_Dev.ViewModels
     public class AdminViewModel
     {
         public List<ApplicationUser> Users { set; get; } = new List<ApplicationUser>();
+        public List<Category> Categories { set; get; } = new List<Category>();
+        public List<Category> CategoriesHidden { set; get; } = new List<Category>();
 
         [BindProperty]
         public InputModel Input { get; set; }
