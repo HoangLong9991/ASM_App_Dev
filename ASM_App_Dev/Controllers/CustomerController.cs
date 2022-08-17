@@ -20,5 +20,12 @@ namespace ASM_App_Dev.Controllers
             var booksToBuy = _context.Books.ToList();
             return View(booksToBuy);
         }
+
+		    [HttpGet]
+        public IActionResult Detail(int id)
+		    {
+        var product = _context.Books.SingleOrDefault(x => x.Id == id);
+        return View(product);
+		    }
     }
 }

@@ -70,7 +70,7 @@ namespace ASM_App_Dev.Controllers
 	
 			}
 			context.SaveChanges();
-			return RedirectToAction("Purchase", "Orders");
+			return RedirectToAction("Checkout", "Orders");
 		}
 	}
 }

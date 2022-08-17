@@ -1,0 +1,84 @@
+﻿@model ASM_App_Dev.Models.Book
+
+@{
+    ViewData["Title"] = "DetailProduct";
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<h1>DetailProduct</h1>
+    <link rel="stylesheet" href="~/css/DetailBook.css" />
+
+
+<div class="super_container">
+    <header class="header" style="display: none;">
+        <div class="header_main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-12 order-lg-2 order-3 text-lg-left text-right">
+                        <div class="header_search">
+                            <div class="header_search_content">
+                                <div class="header_search_form_container">
+                                    <form action="#" class="header_search_form clearfix">
+                                        <div class="custom_dropdown">
+                                            <div class="custom_dropdown_list"> <span class="custom_dropdown_placeholder clc">All Categories</span> <i class="fas fa-chevron-down"></i>
+                                                <ul class="custom_list clc">
+                                                    <li><a class="clc" href="#">All Categories</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="single_product">
+        <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
+            <div class="row">
+                <div class="col-lg-6 order-lg-2 order-1">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                                <div class="carousel-item active"   style=" height: 240px; align-content: center;display: grid;">
+                                    <img class="d-block w-100" src= "" alt="First slide"  
+                                    style= " border-radius: 10px !important; display: block;  height: auto;">
+                                </div>
+                                
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                        </a>
+                    </div>   
+                </div>
+                <div class="col-lg-6 order-3">
+                    <div class="product_description">
+                  
+                        <div class="product_name"><h1 style="margin-top:10px">@Model.NameBook</h1></div>
+                        <div> <span class="product_price">@Model.Price</span> VND </div>
+                        <hr class="singleline">
+                        <div> <p class="product_info">@Model.InformationBook<p> </div>
+                        
+                        <hr class="singleline">
+                        <div class="order_info d-flex flex-row">
+                        </div>
+                        <div class="row">
+                           
+                            <div class="col-xs-6"> <button type="button" class="btn btn-primary shop-button">Add to Cart</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
