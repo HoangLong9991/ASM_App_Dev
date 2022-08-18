@@ -25,18 +25,29 @@ namespace ASM_App_Dev.Controllers
 		[HttpGet]
 		public IActionResult Index(int id)
 		{
-			Cart cart = new Cart();
+			Cart cart = new Cart();		
+			int result = 0;
+
 			if (id != 0)
 			{
 				cart.orderDetails = context.OrderDetails.Include(t => t.Order)
 					.Include(t => t.Book).Where(t => t.OrderId == id).ToList();
-				cart.totalPrice = cart.orderDetails[0].Order.PriceOrder;
+				foreach (var item in cart.orderDetails)
+				{
+					result += item.Price;
+				}
+				cart.totalPrice = result;
+
 				return View(cart);
 			}
 			cart.orderDetails = context.OrderDetails.Include(t => t.Book).Include(t => t.Order)
 				.Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed 
 				&& t.Order.UserId == userManager.GetUserId(User)).ToList();
-			cart.totalPrice = cart.orderDetails[0].Order.PriceOrder;
+			foreach(var item in cart.orderDetails)
+			{
+				result += item.Price;
+			}
+			cart.totalPrice =  result;
 
 			return View(cart);
 		}
