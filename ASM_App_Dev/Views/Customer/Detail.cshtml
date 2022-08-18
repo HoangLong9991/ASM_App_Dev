@@ -1,49 +1,26 @@
-﻿@model ASM_App_Dev.Models.Book
+﻿@model ASM_App_Dev.DTOs.Responses.BookView
 
 @{
     ViewData["Title"] = "DetailProduct";
 }
 <div>
     <a asp-action="Index">Back to List</a>
+    <h1>Detail Product</h1>
+
 </div>
-<h1>DetailProduct</h1>
     <link rel="stylesheet" href="~/css/DetailBook.css" />
 
 
 <div class="super_container">
-    <header class="header" style="display: none;">
-        <div class="header_main">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-12 order-lg-2 order-3 text-lg-left text-right">
-                        <div class="header_search">
-                            <div class="header_search_content">
-                                <div class="header_search_form_container">
-                                    <form action="#" class="header_search_form clearfix">
-                                        <div class="custom_dropdown">
-                                            <div class="custom_dropdown_list"> <span class="custom_dropdown_placeholder clc">All Categories</span> <i class="fas fa-chevron-down"></i>
-                                                <ul class="custom_list clc">
-                                                    <li><a class="clc" href="#">All Categories</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+ 
     <div class="single_product">
         <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
             <div class="row">
                 <div class="col-lg-6 order-lg-2 order-1">
                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-                                <div class="carousel-item active"   style=" height: 240px; align-content: center;display: grid;">
-                                    <img class="d-block w-100" src= "" alt="First slide"  
+                                <div class="carousel-item active"   style=" align-content: center;display: grid;">
+                                    <img class="d-block w-100" src= "@Model.ImageBook" alt="First slide"  
                                     style= " border-radius: 10px !important; display: block;  height: auto;">
                                 </div>
                                 
@@ -61,23 +38,25 @@
                 <div class="col-lg-6 order-3">
                     <div class="product_description">
                   
-                        <div class="product_name"><h1 style="margin-top:10px">@Model.NameBook</h1></div>
-                        <div> <span class="product_price">@Model.Price</span> VND </div>
+                        <div class="product_name"><h1 style="margin-top:10px;color: darkblue;">@Model.NameBook</h1></div>
+                        <div> <span class="product_price" style="font-size: larger;" >Price: @Model.PriceBook</span> VND </div>
                         <hr class="singleline">
-                        <div> <p class="product_info">@Model.InformationBook<p> </div>
+                        <div>
+                            <h6 class="product_info">Information Book </h6>
+                            <p class="product_info">@Model.DescriptionBook<p> </div>
                         
                         <hr class="singleline">
                         <div class="order_info d-flex flex-row">
                         </div>
                         <div class="row">
                            
-                            <div class="col-xs-6"> <button type="button" class="btn btn-primary shop-button">Add to Cart</button> 
+                            <div class="col-xs-6"> 
+                                <a class="btn btn-primary shop-button" style="height: 40px" asp-controller="Orders" asp-action="Create" asp-route-id=@Model.Id>Add To Cart</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </div>

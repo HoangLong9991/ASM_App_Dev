@@ -3,7 +3,8 @@
 *@
 @{
 }
-@model IEnumerable<Book>
+@using ASM_App_Dev.DTOs.Responses
+@model IEnumerable<BookView>
 
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style=" height: 500px; display: flex;">
   <div class="carousel-inner">
@@ -32,9 +33,9 @@
                 <div class="col-md-6 col-lg-3 mb-4 mb-md-0" style=" margin-bottom: 10px !important">
                     <div class="card" style=" border-radius: 10px !important ">
                         <a asp-controller="Customer" asp-action="Detail" asp-route-id=@item.Id>
-                            <div style=" height: 240px; align-content: center;display: grid;">
-                                <img src=""
-                                 class="card-img-top" style=" border-radius: 10px !important; display: block;  height: auto;" />
+                            <div style="height: 240px;align-content: center;display: flex;">
+                                <img src="@item.ImageBook"
+                                 class="card-img-top" style="border-radius: 10px !important;object-fit: cover;" />
                             </div>
                         </a>
                         <div class="card-body">
@@ -44,7 +45,7 @@
                                 </a>
                             </div>
                             <div>
-                                <span src="" class="text-dark mb-0">Price: @item.Price VND</span>
+                                <span src="" class="text-dark mb-0">Price: @item.PriceBook VND</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <p class="text-muted mb-0" src="">Available:<span class="fw-bold">@item.QuantityBook</span></p>

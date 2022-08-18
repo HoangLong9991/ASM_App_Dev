@@ -10,6 +10,6 @@ namespace ASM_App_Dev.ViewModels
 		[BindProperty]
 		public List<OrderDetail> orderDetails { get; set; }
 		public int totalPrice { get; set; }
-
+		
 	}
 }
