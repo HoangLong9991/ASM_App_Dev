@@ -88,7 +88,7 @@
                 <input id="search-input" name="SearchString" class="form-control" placeholder="Request Some Category" />
                 <input type="submit" value="Search" id="btn-search" class="btn btn-secondary" />
             </form>
-            <a id="btn-create" class="btn btn-primary" asp-controller="Books" asp-action="Create">Add Category</a>
+            <a id="btn-create" class="btn btn-primary" asp-controller="Categories" asp-action="Create">Add Category</a>
         </div>
 
         <table class="table">
@@ -97,7 +97,6 @@
                     <th scope="col">#</th>
                     <th scope="col">Category</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,9 +106,6 @@
                         <th scope="row">@item.Id</th>
                         <td>@item.NameCategory</td>
                         <td>@item.Status</td>
-                        <td>
-                            <a asp-controller="Categories" asp-action="Delete" asp-route-id=@item.Id class="btn btn-danger btn-sm">Delete</a>
-                        </td>
                     </tr>
                 }
             </tbody>
