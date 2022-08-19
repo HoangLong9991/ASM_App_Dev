@@ -19,7 +19,7 @@ using static ASM_App_Dev.Areas.Identity.Pages.Account.LoginModel;
 
 namespace ASM_App_Dev.Controllers
 {
-    //[Authorize(Roles = Role.ADMIN)]
+    [Authorize(Roles = Role.ADMIN)]
     public class AdminController : Controller
     {
         private ApplicationDbContext _context;
@@ -31,7 +31,7 @@ namespace ASM_App_Dev.Controllers
             Role.STORE_OWNER,
             Role.CUSTOMER
           }
-      );
+        ); 
         public AdminController(ApplicationDbContext context, 
                                 UserManager<ApplicationUser> userManager, 
                                 RoleManager<IdentityRole> roleManager)
@@ -176,7 +176,7 @@ namespace ASM_App_Dev.Controllers
             _context.SaveChanges();
                
             return RedirectToAction("VerifyCategoryRequest");
-        }
+        } 
 
         [HttpGet]
         public IActionResult RejectCategoryRequest(int id)
