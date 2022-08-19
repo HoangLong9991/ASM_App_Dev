@@ -120,7 +120,7 @@ namespace ASM_App_Dev.Controllers
             {
                 return BadRequest();
             }
-
+          
             getUser.PasswordHash = _userManager.PasswordHasher.HashPassword(getUser, newPassword);
 
             _context.SaveChanges();

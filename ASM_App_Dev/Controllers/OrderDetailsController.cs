@@ -1,5 +1,6 @@
 ﻿using ASM_App_Dev.Data;
 using ASM_App_Dev.Models;
+using ASM_App_Dev.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,20 +22,66 @@ namespace ASM_App_Dev.Controllers
 			this.context = context;
 			this.userManager = userManager;
 		}
-
+		[HttpGet]
 		public IActionResult Index(int id)
 		{
+			Cart cart = new Cart();		
+			int result = 0;
+
 			if (id != 0)
 			{
-				IEnumerable<OrderDetail> orderDetailByIdOrder = context.OrderDetails.Include(t => t.Order)
+				cart.orderDetails = context.OrderDetails.Include(t => t.Order)
 					.Include(t => t.Book).Where(t => t.OrderId == id).ToList();
-				return View(orderDetailByIdOrder);
+				foreach (var item in cart.orderDetails)
+				{
+					result += item.Price;
+				}
+				cart.totalPrice = result;
+
+				return View(cart);
 			}
-			IEnumerable<OrderDetail> orderDetailUncomfirm = context.OrderDetails.Include(t => t.Book).Include(t => t.Order)
+			cart.orderDetails = context.OrderDetails.Include(t => t.Book).Include(t => t.Order)
 				.Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed 
 				&& t.Order.UserId == userManager.GetUserId(User)).ToList();
+			foreach(var item in cart.orderDetails)
+			{
+				result += item.Price;
+			}
+			cart.totalPrice =  result;
 
-			return View(orderDetailUncomfirm);
+			return View(cart);
+		}
+		[HttpGet]
+		public IActionResult Delete (int id)
+		{
+			var orderDetail = context.OrderDetails.Include(t => t.Order).SingleOrDefault(t => t.Id == id);
+			orderDetail.Order.PriceOrder = 0;
+			context.Remove(orderDetail);
+			List<OrderDetail> orderDetails = context.OrderDetails.Include(t => t.Order).Where(t => t.OrderId == orderDetail.OrderId).ToList();
+
+			foreach (var item in orderDetails)
+			{			
+				item.Order.PriceOrder += item.Price;
+			}
+			context.SaveChanges();
+
+			return RedirectToAction("Index");
+		}
+
+
+		[HttpPost]
+		public IActionResult Edit (Cart cart)
+		{
+			foreach (var item in cart.orderDetails)
+			{
+				var a = context.OrderDetails.SingleOrDefault(t => t.Id == item.Id);
+			
+					a.Quantity = item.Quantity;
+
+	
+			}
+			context.SaveChanges();
+			return RedirectToAction("Checkout", "Orders");
 		}
 	}
 }

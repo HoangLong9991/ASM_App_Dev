@@ -1,12 +1,14 @@
 ﻿using ASM_App_Dev.Data;
 using ASM_App_Dev.Enums;
 using ASM_App_Dev.Models;
+using ASM_App_Dev.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASM_App_Dev.Controllers
 {
@@ -68,10 +70,12 @@ namespace ASM_App_Dev.Controllers
 		[NonAction]
 		internal int GetPriceOfOrder(int idOrder)
 		{
-			var orderDetails = context.OrderDetails.Where(t => t.OrderId == idOrder);
+			var orderDetails = context.OrderDetails.Include(t => t.Book).Where(t => t.OrderId == idOrder);
 			int totalPrice = 0;
 			foreach (var item in orderDetails)
 			{
+				item.Price = item.Quantity * item.Book.Price;
+
 				totalPrice += item.Price;
 			}
 			return totalPrice;
@@ -109,16 +113,21 @@ namespace ASM_App_Dev.Controllers
 
 		}
 		[HttpGet]
-		public IActionResult Purchase()
+		public async Task<IActionResult> Checkout()
 		{
-	
+			var currentUser = await userManager.GetUserAsync(User);
+			CheckOut checkOut = new CheckOut();
+			checkOut.Name = currentUser.FullName;
+			checkOut.Address = currentUser.Address;
+			checkOut.Phone = currentUser.PhoneNumber;
+
 			var orderToBuy = context.Orders.Include(t => t.OrderDetails).SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
 
 			foreach (var item in orderToBuy.OrderDetails)
 			{
 				var productToBuy = context.Books.SingleOrDefault(t => t.Id == item.BookId);
 
-				if (productToBuy.QuantityBook > 0)
+				if (productToBuy.QuantityBook > item.Quantity)
 				{
 					productToBuy.QuantityBook -= item.Quantity;
 
@@ -130,12 +139,24 @@ namespace ASM_App_Dev.Controllers
 
 				}
 			}
-
-			orderToBuy.StatusOrder = OrderStatus.InProgress;
-
+			
+			orderToBuy.PriceOrder = GetPriceOfOrder(orderToBuy.Id);
+			checkOut.orderDetails = orderToBuy.OrderDetails;
+			checkOut.TotalPrice = orderToBuy.PriceOrder;
 			context.SaveChanges();
-			return RedirectToAction("Index");
 
+
+
+			return View(checkOut);
+
+		}
+		[HttpGet]
+		public IActionResult Purchase()
+		{
+			var orderToBuy = context.Orders.Include(t => t.OrderDetails).SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
+			orderToBuy.StatusOrder = OrderStatus.InProgress;
+			context.SaveChanges();
+			return RedirectToAction("Index", "Orders");
 		}
 	}
 }
