@@ -5,9 +5,13 @@
     ViewData["Title"] = "Index";
 }
 
-<p>
-    <a asp-controller="Orders" asp-action="Index">List Orders</a>
-</p>
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Customer" asp-action="Index" style = "text-decoration: NONE;">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Orders" asp-action="Index" style = "text-decoration: NONE;">List Orders</a></li>
+        <li class="breadcrumb-item active">Cart</li>
+    </ol>
+</nav>
 
 @if(Model.orderDetails.Count != 0){
         <section class="h-100" style="background-color: aliceblue;border-radius: 10px;">

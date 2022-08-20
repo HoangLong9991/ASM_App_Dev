@@ -32,6 +32,12 @@
                          <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Views" asp-controller="Customer" asp-action="Help">Help</a>
                         </li>
+                            <li>
+            <form asp-action="Index" asp-controller="Customer" method="get">
+            <input type="text" name="nameOrCategoryBook" placeholder="Search by Name Or Category" />
+            <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+    </li>
                         }
                           @if(User.IsInRole(Role.STORE_OWNER)){
                         <li class="nav-item">
