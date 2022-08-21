@@ -43,7 +43,8 @@
               </div>
               <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                @if (Model.orderDetails[i].Order.StatusOrder == OrderStatus.Unconfirmed){
-                <input asp-for="@Model.orderDetails[i].Quantity"  style="width:80px" value="@Model.orderDetails[i].Quantity" id = "quantity @Model.orderDetails[i].Id" 
+                <input asp-for="@Model.orderDetails[i].Quantity"  style="width:80px" value="@Model.orderDetails[i].Quantity"  min="1" max="100" 
+                id = "quantity @Model.orderDetails[i].Id" 
                 onchange="refresh(document.getElementById('@Model.orderDetails[i].Id').value,
                                     document.getElementById('quantity @Model.orderDetails[i].Id').value,
                                     document.getElementById('price @Model.orderDetails[i].Id').value)"/>}
