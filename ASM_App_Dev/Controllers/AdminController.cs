@@ -105,9 +105,17 @@ namespace ASM_App_Dev.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChangePassword()
+        public IActionResult ChangePassword(string id)
         {
-            return View();
+            var getUser = _context.Users.SingleOrDefault(t => t.Id == id);
+            if (getUser == null || getUser.EmailConfirmed == false)
+            {
+                TempData["Message"] = "Can not update Because Email not confirmed";
+                
+                return View(getUser);
+            }
+
+            return View(getUser);
         }
 
         [HttpPost]
@@ -116,12 +124,15 @@ namespace ASM_App_Dev.Controllers
             var getUser = _context.Users.SingleOrDefault(t => t.Id == id);
             var newPassword = user.PasswordHash; 
 
-            if (getUser == null)
+            if (getUser == null && getUser.EmailConfirmed == false)
             {
                 return BadRequest();
             }
           
             getUser.PasswordHash = _userManager.PasswordHasher.HashPassword(getUser, newPassword);
+            TempData["Message"] = "Update Successfully";
+            
+
 
             _context.SaveChanges();
             return RedirectToAction("Index");
