@@ -8,10 +8,20 @@
     int RowNo = 0;
 }
 
-<h1>This is Admin page</h1>
+<h1>Admin page</h1>
 <a asp-action="ShowCategoriesInProgress" asp-controller="Admin" class="btn btn-primary">Verify Category Request</a>
 <br />
-<h1>All Users</h1>
+<h2>All Users</h2>
+
+@{
+    var message = TempData["Message"];
+}
+
+@if (message != null)
+{
+    <h4 class="alert alert-success" role="alert"> <strong>@TempData["Message"]</strong></h4>
+}
+
 
 
 
