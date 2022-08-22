@@ -23,20 +23,9 @@
 }
 
 
-
-
-  @*<form method="POST">
-       <select name="roleName" class="form-control" 
-            asp-items="@(new SelectList(RoleList,"Id","Name"))">
-       </select>
-        <button type="submit" class="btn btn-primary">Select</button>
-  </form>*@
-
-
    <form method="POST">
        <select asp-for="@Model.Input.Role" class="form-control"
-                        asp-items="@Model.RoleSelectList">
-                   @* <option value="">-- Select Role --</option>*@
+                        asp-items="@Model.RoleSelectList">              
         </select>
         <br />
         <button type="submit" class="btn btn-primary">Select</button>

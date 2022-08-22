@@ -76,10 +76,6 @@ namespace ASM_App_Dev.Controllers
 
             if(roleSelectedInView == Role.STORE_OWNER)
             {
-                //adminUser = new AdminViewModel()
-                //{
-                //    UserWithPermission = _userManager.GetUsersInRoleAsync(Role.STORE_OWNER).Result
-                //};
 
                 adminUser = getUserByRole(Role.STORE_OWNER); 
             }
@@ -127,6 +123,11 @@ namespace ASM_App_Dev.Controllers
             if (getUser == null && getUser.EmailConfirmed == false)
             {
                 return BadRequest();
+            }
+            if(newPassword == null)
+            {
+                ModelState.AddModelError("NoInput", "You have not input new password.");
+                return View(getUser);
             }
           
             getUser.PasswordHash = _userManager.PasswordHasher.HashPassword(getUser, newPassword);

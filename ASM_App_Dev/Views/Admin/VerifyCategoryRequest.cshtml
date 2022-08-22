@@ -16,7 +16,6 @@
         @foreach (var item in Model)
         {
             <tr>
-
                 <td>@item.Id</td>
                 <td scope="row">@item.NameCategory</td>
                 <td>@item.Status</td>
@@ -24,10 +23,9 @@
                     <a asp-action="VerifyCategoryRequest" asp-controller="Admin" asp-route-id="@item.Id" asp-route-name="accept" class="btn btn-primary">Accept</a>
                     <a asp-action="VerifyCategoryRequest" asp-controller="Admin" asp-route-id="@item.Id" asp-route-name="reject" class="btn btn-danger">Reject</a>
                 </td>
-
             </tr>
-
-
         }
-    </tbody>
-</table>
+    </tbody> 
+</table> 
+
+ 
