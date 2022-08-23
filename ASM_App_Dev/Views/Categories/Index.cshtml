@@ -48,6 +48,7 @@
     .form-wrapper {
         display: flex;
         margin: 10px 0 10px 0;
+        justify-content: flex-end;
     }
 
     #search-box {
@@ -71,6 +72,11 @@
         color: black;
         text-decoration: none;
     }
+
+    #record-management {
+        color: black;
+        text-decoration: none;
+    }
 </style>
 
 <div class="body-container">
@@ -78,16 +84,12 @@
         <ul class="list-group">
             <li class="list-group-item"><i class="fa-solid fa-book"></i><a id="book-management" asp-controller="Books" asp-action="Index">Book Management</a></li>
             <li class="list-group-item"><i class="fa-solid fa-list"></i><a id="category-request" asp-controller="Categories" asp-action="Index">Category Request</a></li>
-            <li class="list-group-item"><i class="fa-solid fa-clipboard-user"></i>Record Management</li>
+            <li class="list-group-item"><i class="fa-solid fa-clipboard-user"></i><a id="record-management" asp-controller="Records" asp-action="Index">Record Management</a></li>
         </ul>
     </div>
 
     <div class="display-container">
         <div class="form-wrapper">
-            <form id="search-box" asp-controller="Books" asp-action="Index" method="get">
-                <input id="search-input" name="SearchString" class="form-control" placeholder="Request Some Category" />
-                <input type="submit" value="Search" id="btn-search" class="btn btn-secondary" />
-            </form>
             <a id="btn-create" class="btn btn-primary" asp-controller="Categories" asp-action="Create">Add Category</a>
         </div>
 

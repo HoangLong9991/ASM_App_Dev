@@ -12,12 +12,6 @@
     }
     else
     {
-        if (User.IsInRole(Role.ADMIN))
-        {
-            <h1>Manage Category</h1>
-            <h1>Manage User Accounts</h1>
-            <h1>Manage Store Owner Accounts</h1>
-        }
         if (User.IsInRole(Role.STORE_OWNER))
         {
             <a asp-controller="Books" asp-action="Index" class="btn btn-primary">Management Your Book Store</a>
