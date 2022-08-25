@@ -16,6 +16,7 @@
 @{
 }
 
+@model Order
 
 <script src="https://kit.fontawesome.com/a775ea28da.js" crossorigin="anonymous"></script>
 
@@ -80,7 +81,24 @@
         color: black;
         text-decoration: none;
     }
- 
+
+    .customer-information-container {
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 3px 3px 3px 3px;
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.5rem;
+    }
+
+    .fa-user, .fa-envelope, .fa-location-dot {
+        margin-right: 10px;
+    }
+   
 </style>
 
 <div class="body-container">
@@ -93,8 +111,28 @@
     </div>
 
     <div class="display-container">
-    <h1>Order Details</h1>
+        <div class="customer-information-container">
+            <h3><i class="fa-solid fa-user"></i>Customer Name: @Model.User.FullName </h3>
+            <h3><i class="fa-solid fa-envelope"></i>Email: @Model.User.Email </h3>
+            <h3><i class="fa-solid fa-location-dot"></i>Shipping Address: @Model.User.Address</h3>
+        </div>
+        <div class="order-detail-container">
+            <table class="table">
+                <thead>
+                    <tr class="table-dark">
+                        <th scope="col">#</th>
+                        <th scope="col">Book Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+               
+                </tbody>
+            </table>
+        </div>
 
-     
+
     </div>
 </div>

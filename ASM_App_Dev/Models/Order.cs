@@ -16,5 +16,5 @@ namespace ASM_App_Dev.Models
 		public int PriceOrder { get; set; }
 		public OrderStatus StatusOrder { get; set; }
 		public List<OrderDetail> OrderDetails { get; set; }
-	}
+    }
 }

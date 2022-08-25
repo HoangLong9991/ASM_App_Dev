@@ -30,9 +30,18 @@ namespace ASM_App_Dev.Controllers
             return View(orders);
         }
 
-        public IActionResult Details()
+        public IActionResult Details(int id)
         {
-            return View();
+            var ordersDetails = _context.Orders
+            .Include(t => t.User)
+            .SingleOrDefault(t => t.Id == id);
+
+            if (ordersDetails is null)
+            {
+                return NotFound();
+            }
+
+            return View(ordersDetails);
         }
     }
 }
