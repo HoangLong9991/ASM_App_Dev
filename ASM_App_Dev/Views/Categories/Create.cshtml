@@ -6,6 +6,8 @@
 
 @model Category
 
+<script src="https://kit.fontawesome.com/a775ea28da.js" crossorigin="anonymous"></script>
+
 <style>
     .body-container {
         display: flex;
@@ -49,6 +51,11 @@
         color: black;
         text-decoration: none;
     }
+
+    #record-management {
+        color: black;
+        text-decoration: none;
+    }
 </style>
 
 <div class="body-container">
@@ -56,7 +63,7 @@
         <ul class="list-group">
             <li class="list-group-item"><i class="fa-solid fa-book"></i><a id="book-management" asp-controller="Books" asp-action="Index">Book Management</a></li>
             <li class="list-group-item"><i class="fa-solid fa-list"></i><a id="category-request" asp-controller="Categories" asp-action="Index">Category Request</a></li>
-            <li class="list-group-item"><i class="fa-solid fa-clipboard-user"></i>Record Management</li>
+            <li class="list-group-item"><i class="fa-solid fa-clipboard-user"></i><a id="record-management" asp-controller="Records" asp-action="Index">Record Management</a></li>
         </ul>
     </div>
 
@@ -64,7 +71,7 @@
         <form enctype="multipart/form-data" asp-controller="Categories" asp-action="Create" method="post">
             <div class="form-group">
                 <label>Name of Category</label>
-                <input asp-for="NameCategory" class="form-control" placeholder="Name Of Book" />
+                <input asp-for="NameCategory" class="form-control" placeholder="Name of Category" />
                 <span asp-validation-for="NameCategory" class="text-danger"></span>
             </div>
             <div class="btn-wrapper">

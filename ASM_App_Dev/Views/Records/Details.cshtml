@@ -3,7 +3,11 @@
 *@
 @{
 }
-
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
 
 
 @*
@@ -11,7 +15,8 @@
 *@
 @{
 }
-@model IEnumerable<Category>
+
+@model Order
 
 <script src="https://kit.fontawesome.com/a775ea28da.js" crossorigin="anonymous"></script>
 
@@ -48,7 +53,6 @@
     .form-wrapper {
         display: flex;
         margin: 10px 0 10px 0;
-        justify-content: flex-end;
     }
 
     #search-box {
@@ -77,6 +81,24 @@
         color: black;
         text-decoration: none;
     }
+
+    .customer-information-container {
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 3px 3px 3px 3px;
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.5rem;
+    }
+
+    .fa-user, .fa-envelope, .fa-location-dot {
+        margin-right: 10px;
+    }
+   
 </style>
 
 <div class="body-container">
@@ -89,28 +111,28 @@
     </div>
 
     <div class="display-container">
-        <div class="form-wrapper">
-            <a id="btn-create" class="btn btn-primary" asp-controller="Categories" asp-action="Create">Add Category</a>
+        <div class="customer-information-container">
+            <h3><i class="fa-solid fa-user"></i>Customer Name: @Model.User.FullName </h3>
+            <h3><i class="fa-solid fa-envelope"></i>Email: @Model.User.Email </h3>
+            <h3><i class="fa-solid fa-location-dot"></i>Shipping Address: @Model.User.Address</h3>
+        </div>
+        <div class="order-detail-container">
+            <table class="table">
+                <thead>
+                    <tr class="table-dark">
+                        <th scope="col">#</th>
+                        <th scope="col">Book Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+               
+                </tbody>
+            </table>
         </div>
 
-        <table class="table">
-            <thead>
-                <tr class="table-dark">
-                    <th scope="col">#</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <th scope="row">@item.Id</th>
-                        <td>@item.NameCategory</td>
-                        <td>@item.Status</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
     </div>
 </div>
