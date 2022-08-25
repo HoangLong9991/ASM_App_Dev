@@ -15,8 +15,8 @@
 *@
 @{
 }
-
-@model Order
+@using ASM_App_Dev.ViewModels
+@model CheckOut
 
 <script src="https://kit.fontawesome.com/a775ea28da.js" crossorigin="anonymous"></script>
 
@@ -112,23 +112,32 @@
 
     <div class="display-container">
         <div class="customer-information-container">
-            <h3><i class="fa-solid fa-user"></i>Customer Name: @Model.User.FullName </h3>
-            <h3><i class="fa-solid fa-envelope"></i>Email: @Model.User.Email </h3>
-            <h3><i class="fa-solid fa-location-dot"></i>Shipping Address: @Model.User.Address</h3>
+            <h3><i class="fa-solid fa-user"></i>Customer Name: @Model.Name </h3>
+            <h3><i class="fa-solid fa-envelope"></i>Customer Address: @Model.Address </h3>
+            <h3><i class="fa-solid fa-location-dot"></i>Customer Phone: @Model.Phone</h3>
+            <h3><i class="fa-solid fa-location-dot"></i>Total Price: @Model.TotalPrice</h3>
+
         </div>
         <div class="order-detail-container">
             <table class="table">
                 <thead>
                     <tr class="table-dark">
-                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
                         <th scope="col">Book Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Price</th>
-                        <th scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
-               
+                     @foreach (var item in Model.orderDetails)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.Book.NameBook</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price</td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>

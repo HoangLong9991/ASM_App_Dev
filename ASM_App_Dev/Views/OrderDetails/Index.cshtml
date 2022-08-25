@@ -83,7 +83,9 @@
 
                         <div class="card">
                             <div class="card-body" style="display:flex;align-items: baseline;">
+                                @if(@Model.orderDetails[0].Order.StatusOrder == OrderStatus.Unconfirmed){
                                 <button type="submit" class="btn btn-warning btn-block btn-lg">Purchase</button>
+                                }                               
                                 <p style="    padding-left: 100px;">Total: @Model.totalPrice </p>
                             </div>
                         </div>
